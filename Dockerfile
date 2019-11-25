@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir -r /app/deploy/requirements.txt && \
 
 RUN chmod +x /app/deploy/entrypoint.sh
 
-ENTRYPOINT /app/deploy/entrypoint.sh
+CMD /app/deploy/entrypoint.sh
