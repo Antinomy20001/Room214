@@ -23,7 +23,7 @@ ACCESS_TOKEN = 'I_Love_Hanazono_Serena_Forever.jpg'
 SECRET_KEY = 'wkdvhm(o957jsep0s143@6&+3mbfwb#i=6%jzux%8j@na7v#&9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

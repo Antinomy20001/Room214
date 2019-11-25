@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from access_control.serializers import AccessRecordSerializer, AccessRecordListSerializer
 from access_control.models import AccessRecord
+from core.models import Person
 from django.conf import settings
 from utils.utils import validate_serializer
 import json
@@ -16,6 +17,15 @@ class AccessRecordAPI(APIView):
             return Response({'code': status.HTTP_406_NOT_ACCEPTABLE,
                              'detail': 'ACCESS_TOKEN not acceptable'},
                              status=status.HTTP_406_NOT_ACCEPTABLE)
+        try:
+            person = Person.objects.get(pk=data['label'])
+        except:
+            person = None
+        if person is None:
+            return Response({
+            "code":status.HTTP_200_OK,
+            },status=status.HTTP_200_OK)
+
         obj, created = serializer.create(data)
         return Response({
             "code":status.HTTP_201_CREATED,
