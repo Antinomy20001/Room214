@@ -2,10 +2,6 @@ import functools
 from rest_framework import status
 from rest_framework.response import Response
 
-import pandas as pd
-from io import BytesIO
-from django.http.response import FileResponse
-
 def validate_serializer(serializer):
     """
     如果符合序列化要求，序列化之后的数据放在request.serializer.data
