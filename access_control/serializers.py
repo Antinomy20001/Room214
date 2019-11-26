@@ -28,7 +28,7 @@ class AccessRecordSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         interval = validated_data['timestamp'] - settings.INSERT_INTERVAL
-        record = AccessRecord.objects.filter(timestamp__gte=validated_data['timestamp'], label_id__exact=validated_data['label'])
+        record = AccessRecord.objects.filter(timestamp__gte=interval, label_id__exact=validated_data['label'])
         created = False
         if record.count() > 0:
             record = record.first()
