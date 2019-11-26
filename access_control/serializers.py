@@ -42,14 +42,6 @@ class AccessRecordSerializer(serializers.Serializer):
                                         distance=validated_data['distance'],
                                         location=validated_data.get('location','214'))
             created = True
-        # obj, created = AccessRecord.objects.update_or_create(
-        #     timestamp=validated_data['timestamp'],
-        #     label=Person.objects.get(pk=validated_data['label']),
-        #     defaults={
-        #         'distance':validated_data['distance'],
-        #         'location':validated_data.get('location','214')
-        #     }
-        # )
         return record, created
 
 class AccessRecordBulkSerializer(serializers.Serializer):

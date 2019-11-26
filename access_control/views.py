@@ -28,9 +28,8 @@ class AccessRecordAPI(APIView):
 
         obj, created = serializer.create(data)
         return Response({
-            "code":status.HTTP_201_CREATED,
-        },
-        status=status.HTTP_201_CREATED)
+            "code":status.HTTP_201_CREATED if created else status.HTTP_200_OK
+        },status=status.HTTP_201_CREATED)
 
 class AccessRecordListAPI(APIView):
     @validate_serializer(AccessRecordListSerializer)
