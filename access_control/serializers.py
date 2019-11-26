@@ -27,16 +27,35 @@ class AccessRecordSerializer(serializers.Serializer):
     location = serializers.CharField(max_length=200,required=False)
 
     def create(self, validated_data):
-        obj, created = AccessRecord.objects.update_or_create(
-            timestamp=validated_data['timestamp'],
-            label=Person.objects.get(pk=validated_data['label']),
-            defaults={
-                'distance':validated_data['distance'],
-                'location':validated_data.get('location','214')
-            }
-        )
-        return obj, created
+        interval = validated_data['timestamp'] - settings.INSERT_INTERVAL
+        record = AccessRecord.objects.filter(timestamp__gte=validated_data['timestamp'], label_id__exact=validated_data['label'])
+        created = False
+        if record.count() > 0:
+            record = record.first()
+            record.distance = validated_data['distance']
+            record.location = validated_data.get('location','214')
+            record.save()
+        else:
+            # label must exist
+            record = AccessRecord.objects.create(label_id=validated_data['label'],
+                                        timestamp=validated_data['timestamp'],
+                                        distance=validated_data['distance'],
+                                        location=validated_data.get('location','214'))
+            created = True
+        # obj, created = AccessRecord.objects.update_or_create(
+        #     timestamp=validated_data['timestamp'],
+        #     label=Person.objects.get(pk=validated_data['label']),
+        #     defaults={
+        #         'distance':validated_data['distance'],
+        #         'location':validated_data.get('location','214')
+        #     }
+        # )
+        return record, created
 
+class AccessRecordBulkSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+    records = serializers.ListField(child=AccessRecordSerializer(), required=True)
+    
 class AccessRecordListSerializer(serializers.Serializer):
     token = serializers.CharField(required=True)
     date_ranges = DateTimeRangeField(required=True)

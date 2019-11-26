@@ -9,7 +9,7 @@ class AccessRecord(models.Model):
     location = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'time={self.timestamp},label={self.label},distance={self.distance},location={self.location}'
+        return f'time={self.timestamp},label={self.label_id},distance={self.distance},location={self.location}'
 
     def to_json(self):
         result = {
