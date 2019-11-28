@@ -24,9 +24,11 @@ class PersonAPI(APIView):
                              'detail': 'ACCESS_TOKEN not acceptable'},
                              status=status.HTTP_406_NOT_ACCEPTABLE)
         try:
-            serializer.create(data).save()
+            person = serializer.create(data)
+            person.save()
             return Response({
                 "code": status.HTTP_201_CREATED,
+                "label": person.pk
             }, status=status.HTTP_201_CREATED)
         except:
             return Response({

@@ -8,12 +8,20 @@ class PersonSerializer(serializers.Serializer):
     name = serializers.CharField(required=True,max_length=200)
     student_id = serializers.CharField(required=False, min_length=5)
     title = serializers.ChoiceField(choices=['STUDENT','TEACHER'])
+    label = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
-        if 'student_id' in validated_data:
-            return Person(name=validated_data['name'], title=validated_data['title'], student_id=validated_data['student_id'])
-        else:
-            return Person(name=validated_data['name'], title=validated_data['title'])
+        data = {
+            'name': validated_data['name'],
+            'title':validated_data['title'],
+        }
+        label = validated_data.get('label', None)
+        student_id = validated_data.get('student_id', None)
+        if label is not None:
+            data['pk'] = label
+        if student_id is not None:
+            data['student_id'] = student_id
+        return Person(**data)
     
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
