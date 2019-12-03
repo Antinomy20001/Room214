@@ -52,5 +52,5 @@ class AccessRecordListSerializer(serializers.Serializer):
     token = serializers.CharField(required=True)
     date_ranges = DateTimeRangeField(required=True)
     location_list = serializers.ListField(child=serializers.CharField(max_length=200),required=False)
-    labels = serializers.ListField(required=True,child=serializers.IntegerField(min_value=0))
-    distance_ranges = FloatRangeField(required=True)
+    labels = serializers.ListField(required=False,child=serializers.IntegerField(min_value=0))
+    distance_ranges = FloatRangeField(required=False)

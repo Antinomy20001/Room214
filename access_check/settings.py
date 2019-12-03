@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ACCESS_TOKEN = 'I_Love_Hanazono_Serena_Forever.jpg'
 
-INSERT_INTERVAL = datetime.timedelta(seconds=10)
+INSERT_INTERVAL = datetime.timedelta(seconds=int(os.environ.get('INSERT_INTERVAL', 600)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 

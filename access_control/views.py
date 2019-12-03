@@ -5,7 +5,7 @@ from access_control.serializers import AccessRecordSerializer, AccessRecordListS
 from access_control.models import AccessRecord
 from core.models import Person
 from django.conf import settings
-from utils.utils import validate_serializer
+from utils.utils import validate_serializer, convert_cn_tz, convert_utc
 import json
 
 class AccessRecordAPI(APIView):
@@ -41,14 +41,20 @@ class AccessRecordListAPI(APIView):
                              'detail': 'ACCESS_TOKEN not acceptable'},
                              status=status.HTTP_406_NOT_ACCEPTABLE)
         try:
-            queryset = AccessRecord.objects.filter(
-                timestamp__gt=data['date_ranges'].lower,
-                timestamp__lt=data['date_ranges'].upper,
-                location__in=data.get('location_list',['214',]),
-                labels__in=data['labels'],
-                distance__gt=data['distance_ranges'].lower,
-                distance__lt=data['distance_ranges'].upper,
-            )
+            query_param = {
+                'timestamp__gt':convert_utc(data['date_ranges'].lower),
+                'timestamp__lt':convert_utc(data['date_ranges'].upper),
+                'location__in':data.get('location_list',['214',])
+            }
+            labels__in = data.get('labels', None)
+            distance_ranges = data.get('distance_ranges', None)
+            if labels__in is not None:
+                query_param['labels__in'] = labels__in
+            if distance_ranges is not None:
+                query_param['distance__gt'] = distance_ranges.lower
+                query_param['distance__lt'] = distance_ranges.upper
+
+            queryset = AccessRecord.objects.filter(**query_param)
             queryset = [i.to_json() for i in queryset]
             result = {
                 "code":status.HTTP_200_OK,

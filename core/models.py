@@ -12,6 +12,9 @@ class Person(models.Model):
     title = models.TextField(default=TitleType.STUDENT)
     student_id = models.TextField(null=True)
 
+    def __str__(self):
+        return f'label={self.pk},name={self.name},student={self.student_id}'
+
     def to_json(self):
         data = {
             'name':self.name,

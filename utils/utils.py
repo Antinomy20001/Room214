@@ -1,6 +1,10 @@
 import functools
 from rest_framework import status
 from rest_framework.response import Response
+import datetime
+import pytz
+
+TIME_OUTPUT_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 def validate_serializer(serializer):
     """
@@ -26,3 +30,13 @@ def validate_serializer(serializer):
         return handle
 
     return validate
+
+def convert_cn_tz(date):
+    UTC = pytz.timezone('UTC')
+    CN_TZ = pytz.timezone(pytz.country_timezones('cn')[0])
+    return date.astimezone(CN_TZ)
+
+def convert_utc(date):
+    UTC = pytz.timezone('UTC')
+    CN_TZ = pytz.timezone(pytz.country_timezones('cn')[0])
+    return date.astimezone(UTC)
