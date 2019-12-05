@@ -49,12 +49,12 @@ class AccessRecordListAPI(APIView):
             labels__in = data.get('labels', None)
             distance_ranges = data.get('distance_ranges', None)
             if labels__in is not None:
-                query_param['labels__in'] = labels__in
+                query_param['label__in'] = labels__in
             if distance_ranges is not None:
                 query_param['distance__gt'] = distance_ranges.lower
                 query_param['distance__lt'] = distance_ranges.upper
 
-            queryset = AccessRecord.objects.filter(**query_param)
+            queryset = AccessRecord.objects.filter(**query_param).distinct('timestamp','label') 
             queryset = [i.to_json() for i in queryset]
             result = {
                 "code":status.HTTP_200_OK,

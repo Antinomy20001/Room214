@@ -112,31 +112,8 @@ REST_FRAMEWORK = {
     )
 }
 
-CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_WHITELIST = ('*',)
-CORS_ALLOW_METHODS = (
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-)
-CORS_ALLOW_HEADERS = (
-    'Access-Control-Allow-Headers',
-    'accept',
-    'accept-encoding',
-    'authentication',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-)
-
+CORS_ALLOW_CREDENTIALS = True
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
