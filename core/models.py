@@ -31,14 +31,19 @@ class Face(models.Model):
     vector = models.BinaryField(max_length=4 * 512,blank=True,null=False)
     created_at = models.DateTimeField(auto_now=True)
     person = models.OneToOneField(Person, on_delete=models.CASCADE, null=True)
+    room = models.TextField(null=True, default='214')
 
     def to_json(self):
         data = {
-            'vector': struct.unpack('f'*512,self.vector),
+            'vector': list(struct.unpack('f'*512,self.vector)),
+            'room': str(self.room),
             'created_at': int(self.created_at.timestamp()),
             'label': self.person.pk
         }
         return data
+    
+    def __str__(self):
+        return f"label={self.person.pk},room={self.room}"
 
     class Meta:
         db_table = 'Face'

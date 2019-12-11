@@ -14,7 +14,7 @@ INSERT_INTERVAL = datetime.timedelta(seconds=int(os.environ.get('INSERT_INTERVAL
 SECRET_KEY = 'wkdvhm(o957jsep0s143@6&+3mbfwb#i=6%jzux%8j@na7v#&9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DJANGO_DEBUG_MODE', 'FALSE').upper() == 'TRUE'
 
 ALLOWED_HOSTS = ['*']
 

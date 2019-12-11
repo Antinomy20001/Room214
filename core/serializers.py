@@ -29,14 +29,24 @@ class PersonSerializer(serializers.Serializer):
         instance.save()
         return instance
 
+class FaceListSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+    room = serializers.CharField(required=False)
+
 class FaceSerializer(serializers.Serializer):
     token = serializers.CharField(required=True)
     vector = serializers.ListField(required=True,child=serializers.FloatField(min_value=-255.,max_value=255.),min_length=512,max_length=512)
     label = serializers.IntegerField(required=True)
-
+    room = serializers.CharField(required=False)
     def create(self, validated_data):
-        return Face(vector=array('f',validated_data['vector']).tobytes(),person=Person.objects.get(pk=validated_data['label']))
-    
+        data = {
+            'vector':array('f',validated_data['vector']).tobytes(),
+            'person_id':validated_data['label']
+        }
+        room = validated_data.get('room','214')
+        data['room'] = room
+        return Face(**data)
+
     def update(self, instance, validated_data):
         instance.vector = array('f',validated_data.get('vector', struct.unpack('f'*512,instance.vector))).tobytes()
         instance.save()
